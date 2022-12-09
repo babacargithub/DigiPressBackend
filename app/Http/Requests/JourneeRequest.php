@@ -25,7 +25,7 @@ class JourneeRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+             'date_parutions' => 'unique:journees'
         ];
     }
 

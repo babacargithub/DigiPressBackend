@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
+use App\Policies\PermissionNames;
 use Closure;
 
 class CheckIfAdmin
@@ -27,8 +29,11 @@ class CheckIfAdmin
      */
     private function checkIfUserIsAdmin($user)
     {
-        // return ($user->is_admin == 1);
-        return true;
+        if (User::count() == 1){
+            return true;
+        }
+
+        return  $user->can(PermissionNames::ACCESS_ADMIN_AREA);
     }
 
     /**
@@ -39,10 +44,12 @@ class CheckIfAdmin
      */
     private function respondToUnauthorizedRequest($request)
     {
+
         if ($request->ajax() || $request->wantsJson()) {
             return response(trans('backpack::base.unauthorized'), 401);
         } else {
-            return redirect()->guest(backpack_url('login'));
+            abort(403);
+//            return redirect()->guest(backpack_url('login'));
         }
     }
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\ParutionRequest;
 use App\Models\Journal;
 use App\Models\Journee;
+use App\Models\Page;
 use App\Models\Parution;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -157,5 +158,26 @@ class ParutionCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+    public function store(ParutionRequest $request)
+    {
+        /** @var Parution $parution */
+        $parution = $this->crud->create($this->crud->getStrippedSaveRequest($request));
+        $nombre_pages = $parution->journal->nombre_pages;
+        $pages =[];
+        for($i=1; $i <= $nombre_pages; $i++){
+            $page = new Page(["numero"=>$i, "nom"=>"Page $i"]);
+            $pages[] = $page;
+        }
+        $parution->pages()->saveMany($pages);
+        $this->data['entry'] = $this->crud->entry = $parution;
+
+        // show a success message
+        \Alert::success(trans('backpack::crud.insert_success'))->flash();
+
+        // save the redirect choice for next time
+        $this->crud->setSaveAction();
+
+        return $this->crud->performSaveAction($parution->getKey());
     }
 }

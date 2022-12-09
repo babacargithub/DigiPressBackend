@@ -13,7 +13,7 @@ class Journal extends Model
 {
     use CrudTrait;
     use HasFactory;
-    protected $fillable = ["nom","prix","logo"];
+    protected $fillable = ["nom","prix","logo","nombre_pages"];
     protected $identifiableAttribute = 'nom';
 
     public function setLogoAttribute($value)

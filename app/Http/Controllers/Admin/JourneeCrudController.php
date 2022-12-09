@@ -34,7 +34,7 @@ class JourneeCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\Journee::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/journee');
-        CRUD::setEntityNameStrings('journee', 'journees');
+        CRUD::setEntityNameStrings('journée', 'journées');
     }
 
     /**
@@ -69,7 +69,7 @@ class JourneeCrudController extends CrudController
     {
         CRUD::setValidation(JourneeRequest::class);
 
-        CRUD::field('date_parutions');
+        CRUD::field('date_parutions')->type("date")->default(today()->format("DD/MM/YYYY"))->label("Date des Unes ");
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:

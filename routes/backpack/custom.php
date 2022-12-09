@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\RapportController;
 use Illuminate\Support\Facades\Route;
 
 // --------------------------
@@ -27,4 +28,5 @@ Route::group([
     Route::crud('theme', 'ThemeCrudController');
     Route::crud('appel-offre', 'AppelOffreCrudController');
     Route::crud('partner', 'PartnerCrudController');
+    Route::get("rapports",[RapportController::class,"rapports"])->name('rapport.index');
 }); // this should be the absolute last line of this file

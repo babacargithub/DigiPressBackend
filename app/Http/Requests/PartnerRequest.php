@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Policies\Rules\PhoneNumber;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class PartnerRequest extends FormRequest
 {
@@ -24,8 +26,27 @@ class PartnerRequest extends FormRequest
      */
     public function rules()
     {
+//        return [
+//             'nom' => 'required|min:5|max:255',
+//             'email' => 'required|email|unique:partners',
+//            'telephone'=>['required','unique:partners','integer', new PhoneNumber()]
+//        ];
         return [
-            // 'name' => 'required|min:5|max:255'
+            'nom' => [
+                'required',
+                'min:3'
+            ],
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('partners')->ignore($this->id),
+            ],
+            'telephone' => [
+                'required',
+                Rule::unique('partners')->ignore($this->id),
+                new PhoneNumber()
+            ],
+            //
         ];
     }
 

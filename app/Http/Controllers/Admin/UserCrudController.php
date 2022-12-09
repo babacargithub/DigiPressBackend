@@ -25,7 +25,7 @@ class UserCrudController extends \Backpack\PermissionManager\app\Http\Controller
     {
         CRUD::setModel(User::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/user');
-        if( ! backpack_user()->can(PermissionNames::ACCESS_ADMIN_AREA)){
+        if( ! backpack_user()->can(PermissionNames::ACCESS_SUPER_ADMIN_AREA)){
             abort(403);
     }
 

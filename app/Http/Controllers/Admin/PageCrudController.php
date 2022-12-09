@@ -49,8 +49,7 @@ class PageCrudController extends CrudController
     protected function setupListOperation()
     {
         $parutionId = request()->query->get("parution");
-        CRUD::column('id');
-        CRUD::column('numero');
+
         CRUD::column('nom');
         $this->crud->addColumn(["name"=>"image", "type"=>"image", 'label'=>"image"]);
         $this->crud->addColumn(["name"=>"ajouter_article", "type"=>"model_route_link", "route"=>"article.create","model_key"=>"page", 'route_label'=>"Ajouter Article"]);
