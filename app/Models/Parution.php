@@ -37,10 +37,14 @@ class Parution extends Model
     public function setImageLaUneAttribute($value)
     {
 
-        $attribute_name = "image_la_une";
-        $disk = "public";
-        $destination_path = "images_a_la_une";
-        $this->uploadFileToDisk($value, $attribute_name, $disk, $destination_path);
+        if (env("APP_ENV") != "testing") {
+            $attribute_name = "image_la_une";
+            $disk = "public";
+            $destination_path = "images_a_la_une";
+            $this->uploadFileToDisk($value, $attribute_name, $disk, $destination_path);
+        } else {
+            $this->attributes["image_la_une"] = $value;
+        }
 
     }
 

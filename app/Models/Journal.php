@@ -19,11 +19,14 @@ class Journal extends Model
     public function setLogoAttribute($value)
     {
 
-        $attribute_name = "logo";
-        $disk = "public";
-        $destination_path = "logos";
-        $this->uploadFileToDisk($value, $attribute_name, $disk, $destination_path);
-
+       if(env('APP_ENV') !="testing") {
+           $attribute_name = "logo";
+            $disk = "public";
+            $destination_path = "logos";
+            $this->uploadFileToDisk($value, $attribute_name, $disk, $destination_path);
+         }else{
+           $this->attributes["logo"] = $value;
+       }
     }
 
     public function parutions(): HasMany

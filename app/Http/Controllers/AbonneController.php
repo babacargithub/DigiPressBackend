@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreAbonneRequest;
 use App\Http\Requests\UpdateAbonneRequest;
 use App\Models\Abonne;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class AbonneController extends Controller
 {
@@ -34,6 +36,9 @@ class AbonneController extends Controller
     {
         /** @var  Abonne $abonne */
         $abonne  = Abonne::where("telephone","=",substr($phoneNumber, -9,9))->first();
+        if ($abonne == null){
+            return (new JsonResponse("Abonne introuvable"))->setStatusCode(404);
+        }
         return $abonne;
 
     }

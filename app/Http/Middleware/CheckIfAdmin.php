@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\User;
 use App\Policies\PermissionNames;
+use App\Policies\RoleNames;
 use Closure;
 
 class CheckIfAdmin
@@ -29,7 +30,7 @@ class CheckIfAdmin
      */
     private function checkIfUserIsAdmin($user)
     {
-        if (User::count() == 1){
+        if ($user->hasRole(RoleNames::ROLE_SUPER_ADMIN)){
             return true;
         }
 
@@ -49,7 +50,6 @@ class CheckIfAdmin
             return response(trans('backpack::base.unauthorized'), 401);
         } else {
             abort(403);
-//            return redirect()->guest(backpack_url('login'));
         }
     }
 
@@ -63,7 +63,12 @@ class CheckIfAdmin
     public function handle($request, Closure $next)
     {
         if (backpack_auth()->guest()) {
-            return $this->respondToUnauthorizedRequest($request);
+            if ($request->routeIs(backpack_url("login"))){
+                return $next($request);
+
+            }else{
+                return redirect(backpack_url("login"));
+            }
         }
 
         if (! $this->checkIfUserIsAdmin(backpack_user())) {

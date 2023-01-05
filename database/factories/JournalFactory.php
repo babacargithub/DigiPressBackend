@@ -17,12 +17,14 @@ class JournalFactory extends Factory
         return [
             //
             "nom" => $this->faker->company(),
-            "prix" => $this->state(new Sequence(
-                ['prix' => 100],
-                ['prix' => 200],
-            )),
-//            "logo" => $this->faker->image('storage/app/public/logos')
-            "logo" => "fake/images/im.png"
+            "prix" => 200,
+//            "prix" => $this->state(new Sequence(
+//                ['prix' => 100],
+//                ['prix' => 200],
+//            )),
+            "nombre_pages"=>"8",
+            "logo" => $this->faker->imageUrl('storage/framework/testing/disks',240),
+
         ];
     }
 }
