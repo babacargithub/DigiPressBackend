@@ -25,8 +25,8 @@ class AbonneRequest extends FormRequest
     public function rules()
     {
         return [
-             'telephone' => 'required|size::9|unique:abonnes',
-             'email' => 'required|email|unique:abonnes',
+             'telephone' => 'required|unique:abonnes',
+             'email' => 'email|unique:abonnes',
         ];
     }
 

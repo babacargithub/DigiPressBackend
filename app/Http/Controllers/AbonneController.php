@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateAbonneRequest;
 use App\Http\Resources\AchatParutionResource;
 use App\Models\Abonne;
 use App\Models\AchatParution;
+use App\Models\CompteAbonne;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
@@ -31,7 +32,11 @@ class AbonneController extends Controller
     public function store(StoreAbonneRequest $request)
     {
         //
-        return Abonne::create($request->input());
+        $abonne = Abonne::create($request->input());
+        $compteAbonne = new CompteAbonne(["solde"=>0]);
+        $compteAbonne->abonne()->associate($abonne);
+        $compteAbonne->save();
+        return $abonne;
     }
 
     public function abonneExists($phoneNumber)
@@ -75,26 +80,5 @@ class AbonneController extends Controller
         return ["solde"=>$solde, "transactions"=>$transactions];
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param UpdateAbonneRequest $request
-     * @param Abonne $abonne
-     * @return Response
-     */
-    public function update(UpdateAbonneRequest $request, Abonne $abonne)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Abonne $abonne
-     * @return Response
-     */
-    public function destroy(Abonne $abonne)
-    {
-        //
-    }
 }
