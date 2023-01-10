@@ -34,7 +34,7 @@ class CompteAbonneController extends Controller
     {
         //
         $montant = request()->input('montant');
-       return  new JsonResponse(["solde_disponible"=> $abonne->compte->soldeDisponible($montant)]);
+       return  new JsonResponse(["solde_disponible"=> $abonne->compte()->first()->soldeDisponible($montant)]);
     }
 
 
