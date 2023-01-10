@@ -6,7 +6,9 @@ use App\Http\Requests\StorePublicationRequest;
 use App\Http\Requests\UpdatePublicationRequest;
 use App\Http\Resources\PageResource;
 use App\Http\Resources\ParutionResource;
+use App\Models\Abonne;
 use App\Models\AchatParution;
+use App\Models\CompteAbonne;
 use App\Models\Page;
 use App\Models\Parution;
 use Illuminate\Database\Eloquent\Builder;
@@ -37,67 +39,30 @@ class ParutionController extends Controller
         return response(PageResource::collection($parution->pages));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StorePublicationRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StorePublicationRequest $request)
-    {
-        //
+    public function getPaymentUrl($parutions){
 
+        // create the wave checkout session
+        return $this->calculateTotalToPay($parutions);
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Parution  $publication
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Parution $publication)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdatePublicationRequest  $request
-     * @param  \App\Models\Parution  $publication
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdatePublicationRequest $request, Parution $publication)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Parution  $publication
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Parution $publication)
-    {
-        //
-    }
-    public function getPaymentUrl(){
-        $parutions = request()->json("parutions");
+    public function calculateTotalToPay($parutions){
         $totalToPay = 0;
         foreach ($parutions as $parution) {
             $totalToPay = $totalToPay + $parution['prix'];
         }
-        // create the wave checkout session
-        dd($totalToPay);
+        return $totalToPay;
     }
     public function savePayment(){
+        $clientId = request()->header("Client-Id");
         $parutions = request()->json("parutions");
+        $totalToPay = $this->calculateTotalToPay($parutions);
+        if (! Abonne::with('compte')->find($clientId)->compte->soldeDisponible($totalToPay)){
+            abort(403, "Solde insuffisant");
+        }
         foreach ($parutions as $parution) {
             $achatParution = new AchatParution(
                 [
                     "parution_id"=>$parution["id"],
-                    "abonne_id"=>1,
+                    "abonne_id"=> $clientId ,
                 "prix"=>$parution["prix"],
                 "methode_paiement"=>"WAVE",
                 ]);

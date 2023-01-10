@@ -5,47 +5,48 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreAbonnementRequest;
 use App\Http\Requests\UpdateAbonnementRequest;
 use App\Models\Abonnement;
+use App\Models\Formule;
+use Illuminate\Http\Response;
 
 class AbonnementController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
+
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreAbonnementRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreAbonnementRequest $request
+     * @return Abonnement
      */
-    public function store(StoreAbonnementRequest $request)
+    public function store(StoreAbonnementRequest $request): Abonnement
     {
         //
+
+        $abonnement = new Abonnement($request->input());
+        $formule = Formule::findOrFail($request->input()["formule_id"]);
+        $abonnement->date_expiration = now()->addDays($formule->duree);
+        $abonnement->save();
+        return  $abonnement;
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Abonnement  $abonnement
-     * @return \Illuminate\Http\Response
+     * @param Abonnement $abonnement
+     * @return Abonnement
      */
     public function show(Abonnement $abonnement)
     {
         //
+        return $abonnement;
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateAbonnementRequest  $request
-     * @param  \App\Models\Abonnement  $abonnement
-     * @return \Illuminate\Http\Response
+     * @param UpdateAbonnementRequest $request
+     * @param Abonnement $abonnement
+     * @return Response
      */
     public function update(UpdateAbonnementRequest $request, Abonnement $abonnement)
     {
@@ -55,8 +56,8 @@ class AbonnementController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Abonnement  $abonnement
-     * @return \Illuminate\Http\Response
+     * @param Abonnement $abonnement
+     * @return Response
      */
     public function destroy(Abonnement $abonnement)
     {

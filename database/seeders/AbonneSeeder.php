@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\Abonne;
 use App\Models\Abonnement;
 use App\Models\CategorieAbonne;
-use App\Models\TypeAbonnement;
+use App\Models\Formule;
 use Illuminate\Database\Seeder;
 
 class AbonneSeeder extends Seeder
@@ -20,7 +20,7 @@ class AbonneSeeder extends Seeder
         //
         Abonne::factory()->count(500)
             ->for(CategorieAbonne::factory()->create())
-            ->has(Abonnement::factory()->for(TypeAbonnement::factory()))
+            ->has(Abonnement::factory()->for(Formule::factory()))
             ->create();
     }
 }

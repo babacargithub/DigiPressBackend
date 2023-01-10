@@ -9,12 +9,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Abonnement extends Model
 {
     use HasFactory;
-
+    protected $fillable = ["formule_id","abonne_id","date_expiration"];
     public function abonne() : BelongsTo
     {
         return  $this->belongsTo(Abonne::class);
-    } public function typeAbonnement() : BelongsTo
+    }
+    public function formule() : BelongsTo
     {
-        return  $this->belongsTo(TypeAbonnement::class);
+        return  $this->belongsTo(Formule::class);
     }
 }

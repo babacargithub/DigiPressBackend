@@ -6,9 +6,13 @@ use App\Policies\RoleNames;
 
 @can(PermissionNames::ACCESS_ADMIN_AREA)
     <li class="nav-item"><a class="nav-link" href="{{ backpack_url('journee') }}"><i
-                class="nav-icon la la-calendar"></i> Journées</a></li>
+                class="nav-icon la la-calendar">
+
+            </i> Journées</a></li>
     <li class="nav-item"><a class="nav-link" href="{{ backpack_url('parution') }}"><i class="nav-icon la la-book"></i>
             Publications</a></li>
+    <li class="nav-item"><a class="nav-link" href="{{ backpack_url('resume') }}"><i class="nav-icon la la-book"></i>
+            Résumés</a></li>
     <li class="nav-item"><a class="nav-link" href="{{ backpack_url('abonne') }}"><i class="nav-icon la la-users"></i>
             Abonnés</a></li>
     <li class="nav-item"><a class="nav-link" href="{{ backpack_url('journal') }}"><i
@@ -16,6 +20,8 @@ use App\Policies\RoleNames;
     <li class="nav-item"><a class="nav-link" href="{{ backpack_url('theme') }}"><i class="nav-icon la la-tags"></i>
             Thèmes</a></li>
     @hasrole(RoleNames::ROLE_SUPER_ADMIN)
+    <li class="nav-item"><a class="nav-link" href="{{ backpack_url('formule') }}"><i
+                class="nav-icon la la-handshake"></i> Formules</a></li>
     <li class="nav-item"><a class="nav-link" href="{{ backpack_url('partner') }}"><i
                 class="nav-icon la la-handshake"></i> Partenaires</a></li>
     <li class="nav-item"><a class="nav-link" href="{{ route('rapport.index') }}"><i

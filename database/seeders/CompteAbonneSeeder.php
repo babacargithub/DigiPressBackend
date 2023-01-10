@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Formule;
 use Illuminate\Database\Seeder;
 
-class TypeAbonnementSeeder extends Seeder
+class CompteAbonneSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,7 +14,5 @@ class TypeAbonnementSeeder extends Seeder
     public function run()
     {
         //
-        Formule::factory()->count(5)->create();
-
     }
 }

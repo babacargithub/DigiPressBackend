@@ -1,13 +1,11 @@
 <?php
 
 use App\Models\Abonne;
-use App\Models\CategorieAbonne;
-use App\Models\Formule;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAbonnementsTable extends Migration
+class CreateCompteAbonnesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -16,11 +14,10 @@ class CreateAbonnementsTable extends Migration
      */
     public function up()
     {
-        Schema::create('abonnements', function (Blueprint $table) {
+        Schema::create('compte_abonnes', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Abonne::class)->constrained("abonnes")->cascadeOnDelete()->cascadeOnUpdate();
-            $table->dateTime("date_expiration");
-            $table->foreignIdFor(Formule::class);
+            $table->integer("solde")->nullable(false)->default(0);
+            $table->foreignIdFor(Abonne::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -32,6 +29,6 @@ class CreateAbonnementsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('abonnements');
+        Schema::dropIfExists('compte_abonnes');
     }
 }

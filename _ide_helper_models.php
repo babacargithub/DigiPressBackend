@@ -49,7 +49,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Abonne $abonne
- * @property-read \App\Models\TypeAbonnement|null $typeAbonnement
+ * @property-read \App\Models\Formule|null $typeAbonnement
  * @method static \Database\Factories\AbonnementFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Abonnement newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Abonnement newQuery()
@@ -349,15 +349,15 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Abonnement[] $abonnements
  * @property-read int|null $abonnements_count
  * @method static \Database\Factories\TypeAbonnementFactory factory(...$parameters)
- * @method static \Illuminate\Database\Eloquent\Builder|TypeAbonnement newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|TypeAbonnement newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|TypeAbonnement query()
- * @method static \Illuminate\Database\Eloquent\Builder|TypeAbonnement whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|TypeAbonnement whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|TypeAbonnement whereNiveau($value)
- * @method static \Illuminate\Database\Eloquent\Builder|TypeAbonnement whereNom($value)
- * @method static \Illuminate\Database\Eloquent\Builder|TypeAbonnement wherePrix($value)
- * @method static \Illuminate\Database\Eloquent\Builder|TypeAbonnement whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Formule newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Formule newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Formule query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Formule whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Formule whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Formule whereNiveau($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Formule whereNom($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Formule wherePrix($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Formule whereUpdatedAt($value)
  */
 	class TypeAbonnement extends \Eloquent {}
 }

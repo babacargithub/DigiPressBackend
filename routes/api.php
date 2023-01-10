@@ -1,12 +1,16 @@
 <?php
 
 use App\Http\Controllers\AbonneController;
+use App\Http\Controllers\AbonnementController;
 use App\Http\Controllers\AppelOffreController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\CompteAbonneController;
+use App\Http\Controllers\FormuleController;
 use App\Http\Controllers\JournalController;
 use App\Http\Controllers\JourneeController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ParutionController;
+use App\Http\Controllers\ResumeController;
 use App\Http\Controllers\ThemeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -25,7 +29,11 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
+//Route::get("compte/dss/transactions",function (Request $request){
+//    return new \Symfony\Component\HttpFoundation\Response("Response");
+//});
 Route::get("abonnes/phone_number/{phoneNumber}", [AbonneController::class,"abonneExists"]);
+Route::get("abonnes/transactions/{abonne_id}", [AbonneController::class,"showTransactions"]);
 Route::get("parutions/{date}",[ParutionController::class,"index"]);
 Route::get("parutions/{parution}/pages",[ParutionController::class,"parutionPages"]);
 Route::post("payer",[ParutionController::class,"savePayment"]);
@@ -37,4 +45,9 @@ Route::resource("abonnes", AbonneController::class);
 Route::resource("parutions", ParutionController::class);
 Route::resource("articles", ArticleController::class);
 Route::resource("themes", ThemeController::class);
-Route::resource("appels_offres", AppelOffreController::class);
+Route::apiResource("resumes", ResumeController::class);
+Route::apiResource("abonnements", AbonnementController::class);
+Route::apiResource("formules", FormuleController::class);
+Route::post("comptes_abonne/{compteAbonne}/payment_url", [CompteAbonneController::class,"getWavePaymentUrl"]);
+Route::post("comptes_abonne/{compteAbonne}/solde_disponible", [CompteAbonneController::class,"soldeDisponible"]);
+

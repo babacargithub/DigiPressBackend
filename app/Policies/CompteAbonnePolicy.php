@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Formule;
+use App\Models\CompteAbonne;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class TypeAbonnementPolicy
+class CompteAbonnePolicy
 {
     use HandlesAuthorization;
 
@@ -25,10 +25,10 @@ class TypeAbonnementPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Formule  $typeAbonnement
+     * @param  \App\Models\CompteAbonne  $compteAbonne
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Formule $typeAbonnement)
+    public function view(User $user, CompteAbonne $compteAbonne)
     {
         //
     }
@@ -48,10 +48,10 @@ class TypeAbonnementPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Formule  $typeAbonnement
+     * @param  \App\Models\CompteAbonne  $compteAbonne
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Formule $typeAbonnement)
+    public function update(User $user, CompteAbonne $compteAbonne)
     {
         //
     }
@@ -60,10 +60,10 @@ class TypeAbonnementPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Formule  $typeAbonnement
+     * @param  \App\Models\CompteAbonne  $compteAbonne
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Formule $typeAbonnement)
+    public function delete(User $user, CompteAbonne $compteAbonne)
     {
         //
     }
@@ -72,10 +72,10 @@ class TypeAbonnementPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Formule  $typeAbonnement
+     * @param  \App\Models\CompteAbonne  $compteAbonne
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Formule $typeAbonnement)
+    public function restore(User $user, CompteAbonne $compteAbonne)
     {
         //
     }
@@ -84,10 +84,10 @@ class TypeAbonnementPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Formule  $typeAbonnement
+     * @param  \App\Models\CompteAbonne  $compteAbonne
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Formule $typeAbonnement)
+    public function forceDelete(User $user, CompteAbonne $compteAbonne)
     {
         //
     }
