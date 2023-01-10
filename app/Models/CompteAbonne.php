@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class CompteAbonne extends Model
 {
     use HasFactory;
+    protected $fillable = ["solde"];
     public function abonne(): BelongsTo
     {
 
