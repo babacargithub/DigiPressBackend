@@ -17,12 +17,12 @@ class CompteAbonneController extends Controller
      * @param CompteAbonne $compteAbonne
      * @return JsonResponse
      */
-    public function getWavePaymentUrl(CompteAbonne $compteAbonne): JsonResponse
+    public function getWavePaymentUrl(Abonne $abonne): JsonResponse
     {
         //
         $link = "https://pay.wave.com/c/cos-1br4q87j8105j?a=3300&c=XOF&m=Golob%20One";
         $montant = request()->input('montant');
-        $compteAbonne->save();
+        $abonne->compte->augmenterSolde($montant);
        return  new JsonResponse(["launch_url"=>$link]);
     }/**
      * Display the specified resource.
@@ -34,7 +34,7 @@ class CompteAbonneController extends Controller
     {
         //
         $montant = request()->input('montant');
-       return  new JsonResponse(["solde_disponible"=> $abonne->compte()->first()->soldeDisponible($montant)]);
+       return  new JsonResponse(["solde_disponible"=> $abonne->compte->soldeDisponible($montant)]);
     }
 
 

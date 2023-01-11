@@ -48,6 +48,6 @@ Route::resource("themes", ThemeController::class);
 Route::apiResource("resumes", ResumeController::class);
 Route::apiResource("abonnements", AbonnementController::class);
 Route::apiResource("formules", FormuleController::class);
-Route::post("comptes_abonne/{compteAbonne}/payment_url", [CompteAbonneController::class,"getWavePaymentUrl"]);
-Route::post("comptes_abonne/{compteAbonne}/solde_disponible", [CompteAbonneController::class,"soldeDisponible"]);
+Route::post("comptes_abonne/{abonne}/payment_url", [CompteAbonneController::class,"getWavePaymentUrl"]);
+Route::post("comptes_abonne/{abonne}/solde_disponible", [CompteAbonneController::class,"soldeDisponible"]);
 
