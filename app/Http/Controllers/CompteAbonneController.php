@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCompteAbonneRequest;
-use App\Http\Requests\UpdateCompteAbonneRequest;
 use App\Models\Abonne;
 use App\Models\CompteAbonne;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Http;
 
 class CompteAbonneController extends Controller
 {
@@ -20,14 +19,17 @@ class CompteAbonneController extends Controller
     public function getWavePaymentUrl(Abonne $abonne): JsonResponse
     {
         //
-        $link = "https://pay.wave.com/c/cos-1br4q87j8105j?a=3300&c=XOF&m=Golob%20One";
+        $url = "https://golobone.net/go_travel_v4/public/api/mobile/digipress_wave_url";
         $montant = request()->input('montant');
+        $response = Http::post($url,["client_id"=>1,"montant"=>$montant]);
         $abonne->compte->augmenterSolde($montant);
-       return  new JsonResponse(["launch_url"=>$link]);
-    }/**
+       return  new JsonResponse(["launch_url"=>$response->json("wave_launch_url")]);
+    }
+
+    /**
      * Display the specified resource.
      *
-     * @param CompteAbonne $compteAbonne
+     * @param Abonne $abonne
      * @return JsonResponse
      */
     public function soldeDisponible(Abonne $abonne): JsonResponse

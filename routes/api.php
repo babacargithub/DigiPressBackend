@@ -34,6 +34,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 //});
 Route::get("abonnes/phone_number/{phoneNumber}", [AbonneController::class,"abonneExists"]);
 Route::get("abonnes/transactions/{abonne_id}", [AbonneController::class,"showTransactions"]);
+Route::post("payment_success",[ParutionController::class,"paymentSuccessCallback"]);
 Route::get("parutions/{date}",[ParutionController::class,"index"]);
 Route::get("parutions/{parution}/pages",[ParutionController::class,"parutionPages"]);
 Route::post("payer",[ParutionController::class,"savePayment"]);

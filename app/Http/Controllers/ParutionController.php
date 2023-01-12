@@ -2,25 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorePublicationRequest;
-use App\Http\Requests\UpdatePublicationRequest;
 use App\Http\Resources\PageResource;
 use App\Http\Resources\ParutionResource;
 use App\Models\Abonne;
 use App\Models\AchatParution;
-use App\Models\CompteAbonne;
-use App\Models\Page;
 use App\Models\Parution;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 
 class ParutionController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param $date
+     * @return Response
      */
-    public function index($date)
+    public function index($date): Response
     {
         //
         $parutionDuJour = Parution::whereHas("journee", function (Builder $query) use( $date) {
@@ -28,22 +28,20 @@ class ParutionController extends Controller
         })->get();
         return response(ParutionResource::collection($parutionDuJour));
     }
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param Parution $parution
+     * @return Response
      */
-    public function parutionPages(Parution $parution)
+    public function parutionPages(Parution $parution): Response
     {
         //dd
         return response(PageResource::collection($parution->pages));
     }
 
-    public function getPaymentUrl($parutions){
 
-        // create the wave checkout session
-        return $this->calculateTotalToPay($parutions);
-    }
     public function calculateTotalToPay($parutions){
         $totalToPay = 0;
         foreach ($parutions as $parution) {
@@ -73,5 +71,24 @@ class ParutionController extends Controller
         }
         return $parutions;
         // create the wave checkout session
+    }
+    public function paymentSuccessCallback(): ?JsonResponse
+    {
+
+        try {
+            $data = json_decode(request()->getContent(), true);
+            $clientId = $data['client_id'];
+            $montant = $data['montant'];
+            $compte = Abonne::with('compte')->find($clientId)->compte;
+            $compte->augmenterSolde($montant);
+            $compte->save();
+
+
+            return new JsonResponse(["status" => "OK: Payment saved"]);
+        } catch (\Exception $e) {
+           Log::error("unable to save payment, error Happened");
+           Log::error($e->getMessage().' '. $e->getTraceAsString());
+            return  null;
+        }
     }
 }
