@@ -17,9 +17,7 @@ Route::post('/login', function (\Illuminate\Http\Request $request){
 });
 Route::middleware("auth:sanctum")->group(function(){
 
-    Route::get('ventes', function (){
-       return JsonResource::collection(Partner::find(1)->journal->achatsDuJour());
-    });
+    Route::get("ventes", [PartnerController::class,"ventesDuJour"]);
     Route::get("profile", [PartnerController::class,"index"]);
     Route::get("ventes_du_jour", [PartnerController::class,"ventesDuJour"]);
     Route::get("parutions", [PartnerController::class,"parutionsMois"]);
@@ -28,5 +26,8 @@ Route::middleware("auth:sanctum")->group(function(){
     Route::get("users", [PartnerController::class,"rapports"]);
     Route::get("users/add_user", [PartnerController::class,"rapports"]);
     Route::get("users/revoke_user", [PartnerController::class,"rapports"]);
+    Route::post("retrait", [PartnerController::class,"retrait"]);
+    Route::get("transactions", [PartnerController::class,"transactions"]);
+    Route::get("compte", [PartnerController::class,"compte"]);
 
 });

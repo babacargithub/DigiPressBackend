@@ -6,7 +6,9 @@ use App\Http\Resources\PageResource;
 use App\Http\Resources\ParutionResource;
 use App\Models\Abonne;
 use App\Models\AchatParution;
+use App\Models\CompteAbonne;
 use App\Models\Parution;
+use App\Models\RechargeCompte;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
@@ -53,7 +55,10 @@ class ParutionController extends Controller
         $clientId = request()->header("Client-Id");
         $parutions = request()->json("parutions");
         $totalToPay = $this->calculateTotalToPay($parutions);
-        if (! Abonne::with('compte')->find($clientId)->compte->soldeDisponible($totalToPay)){
+        /** @var CompteAbonne $compte */
+        $compte = Abonne::with('compte')->find($clientId)->compte;
+
+        if (! $compte->soldeDisponible($totalToPay)){
             abort(403, "Solde insuffisant");
         }
         foreach ($parutions as $parution) {
@@ -67,8 +72,16 @@ class ParutionController extends Controller
             $achatParution->commission_journal = 12;
             $achatParution->methode_paiement = "WAVE";
             $achatParution->save();
+           /*
+            * TODO augmenter solde partenaire
+            $comptePartenaire = $achatParution->journal->partner->compte;
+            $comptePartenaire->augmenterSolde($achatParution->commission_journal);
+            $comptePartenaire->save();*/
 
         }
+        $compte->diminuerSolde($totalToPay);
+        $compte->save();
+
         return $parutions;
         // create the wave checkout session
     }
@@ -79,9 +92,15 @@ class ParutionController extends Controller
             $data = json_decode(request()->getContent(), true);
             $clientId = $data['client_id'];
             $montant = $data['montant'];
+            /** @var  $compte CompteAbonne  */
             $compte = Abonne::with('compte')->find($clientId)->compte;
             $compte->augmenterSolde($montant);
             $compte->save();
+            $recharge = new RechargeCompte();
+            $recharge->montant = $montant;
+            $recharge->compte()->associate($compte);
+            $recharge->methode_paiement = "WAVE";
+            $recharge->save();
 
 
             return new JsonResponse(["status" => "OK: Payment saved"]);

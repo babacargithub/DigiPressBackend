@@ -98,15 +98,18 @@ class PartnerCrudController extends CrudController
     {
         $partner = new Partner($this->crud->getStrippedSaveRequest($request));
 
+       /** @var Partner $item */
         $item = $this->crud->create($partner->toArray());
         $user_account = new User();
         $user_account->email =  $partner->email;
         $user_account->name = $partner->nom;
         $user_account->password = Hash::make("0000");
         $user_account->assignRole(RoleNames::ROLE_PARTNER);
+        $user_account->save();
+        $item->user()->associate($user_account);
+        $item->save();
         $comptePartner = new ComptePartner(["solde"=>0]);
         $comptePartner->partner()->associate($item);
-        $user_account->save();
         $comptePartner->save();
 
         $this->data['entry'] = $this->crud->entry = $item;

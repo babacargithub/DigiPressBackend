@@ -60,6 +60,10 @@ class Parution extends Model
         $abonne_id = request()->header('client_id');
         return $this->achats()->where("abonne_id","=", $abonne_id)->first() !== null;
     }
+    public function getIsPurchasedAttribute(): bool
+    {
+        return $this->isPurchased();
+    }
 
     /**
      * Get the user's first name.

@@ -29,6 +29,8 @@ Route::group([
     Route::crud('appel-offre', 'AppelOffreCrudController');
     Route::crud('partner', 'PartnerCrudController');
     Route::get("rapports",[RapportController::class,"rapports"])->name('rapport.index');
+    Route::get("soldes",[RapportController::class,"soldes"])->name('rapport.solde');
+    Route::get("stats",[RapportController::class,"stats"])->name('rapport.stats');
     Route::crud('resume', 'ResumeCrudController');
     Route::crud('formule', 'FormuleCrudController');
 }); // this should be the absolute last line of this file

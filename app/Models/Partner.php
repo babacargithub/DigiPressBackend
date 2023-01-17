@@ -22,7 +22,7 @@ protected $fillable =["nom","email","telephone","journal_id"];
     {
         return $this->belongsTo(Journal::class);
     }
-    public function comptePartner(): HasOne
+    public function compte(): HasOne
     {
         return $this->hasOne(ComptePartner::class);
     }

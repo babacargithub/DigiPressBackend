@@ -65,20 +65,6 @@
 
         </div>
     </div>
-<div class="col-sm-6 col-lg-3">  <div class="card border-2 rounded text-white bg-yellow">
-            <div class="card-body">
-                <div class="text-value">{{ number_format($recharges, 0,","," ") }}</div>
-
-                <div>Total Recharges Journée</div>
-
-                <div class="progress progress-white progress-xs my-2">
-                    <div class="progress-bar" role="progressbar" style="width: 280%" aria-valuenow="280" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-
-            </div>
-
-        </div>
-    </div>
 
 </div>
 @endsection

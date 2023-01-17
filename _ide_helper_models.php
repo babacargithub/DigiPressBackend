@@ -14,11 +14,12 @@ namespace App\Models{
 /**
  * App\Models\Abonne
  *
+ * @property $compte CompteAbonne
  * @property int $id
  * @property string $prenom
  * @property string $nom
  * @property int $telephone
- * @property int|null $type_abonne_id
+ * @property int|null $categorie_abonne_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Abonnement|null $abonnement
@@ -27,12 +28,12 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Abonne newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Abonne newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Abonne query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Abonne whereCategorieAbonneId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Abonne whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Abonne whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Abonne whereNom($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Abonne wherePrenom($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Abonne whereTelephone($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Abonne whereTypeAbonneId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Abonne whereUpdatedAt($value)
  */
 	class Abonne extends \Eloquent {}
@@ -45,11 +46,12 @@ namespace App\Models{
  * @property int $id
  * @property int $abonne_id
  * @property string $date_expiration
- * @property int $type_abonnement_id
+ * @property int $formule_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int|null $paye
  * @property-read \App\Models\Abonne $abonne
- * @property-read \App\Models\Formule|null $typeAbonnement
+ * @property-read \App\Models\Formule|null $formule
  * @method static \Database\Factories\AbonnementFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Abonnement newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Abonnement newQuery()
@@ -57,8 +59,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Abonnement whereAbonneId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Abonnement whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Abonnement whereDateExpiration($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Abonnement whereFormuleId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Abonnement whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Abonnement whereTypeAbonnementId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Abonnement wherePaye($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Abonnement whereUpdatedAt($value)
  */
 	class Abonnement extends \Eloquent {}
@@ -178,15 +181,86 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\CompteAbonne
+ *
+ * @property integer $id
+ * @property integer $solde
+ * @property Abonne $abonne
+ * @property int $abonne_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\RechargeCompte[] $recharges
+ * @property-read int|null $recharges_count
+ * @method static \Database\Factories\CompteAbonneFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|CompteAbonne newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|CompteAbonne newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|CompteAbonne query()
+ * @method static \Illuminate\Database\Eloquent\Builder|CompteAbonne whereAbonneId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CompteAbonne whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CompteAbonne whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CompteAbonne whereSolde($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CompteAbonne whereUpdatedAt($value)
+ */
+	class CompteAbonne extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\ComptePartner
+ *
+ * @property float $solde
+ * @property int $partner_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Partner $partner
+ * @method static \Illuminate\Database\Eloquent\Builder|ComptePartner newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ComptePartner newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ComptePartner query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ComptePartner whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ComptePartner wherePartnerId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ComptePartner whereSolde($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ComptePartner whereUpdatedAt($value)
+ */
+	class ComptePartner extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\Formule
+ *
+ * @property int $id
+ * @property int $prix
+ * @property string|null $nom
+ * @property int|null $duree
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Abonnement[] $abonnements
+ * @property-read int|null $abonnements_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Formule newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Formule newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Formule query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Formule whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Formule whereDuree($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Formule whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Formule whereNom($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Formule wherePrix($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Formule whereUpdatedAt($value)
+ */
+	class Formule extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Journal
  *
  * @property int $id
  * @property string $nom
  * @property int $prix
- * @property string|null $logo
+ * @property string $logo
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int|null $prix_net
+ * @property int|null $nombre_pages
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Parution[] $parutions
  * @property-read int|null $parutions_count
  * @method static \Database\Factories\JournalFactory factory(...$parameters)
@@ -197,6 +271,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Journal whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Journal whereLogo($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Journal whereNom($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Journal whereNombrePages($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Journal wherePrix($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Journal wherePrixNet($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Journal whereUpdatedAt($value)
@@ -213,6 +288,9 @@ namespace App\Models{
  * @property string|null $libelle
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read string $label
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Parution[] $parutions
+ * @property-read int|null $parutions_count
  * @method static \Database\Factories\JourneeFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Journee newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Journee newQuery()
@@ -240,6 +318,7 @@ namespace App\Models{
  * @property int $compteur
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Article[] $articles
  * @property-read int|null $articles_count
+ * @property-read mixed $image
  * @property-read \App\Models\Parution $parution
  * @method static \Database\Factories\PageFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Page newModelQuery()
@@ -265,12 +344,13 @@ namespace App\Models{
  * @property string $nom
  * @property string $email
  * @property string $telephone
- * @property int $user_id
+ * @property int|null $user_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int $journal_id
+ * @property-read \App\Models\ComptePartner|null $comptePartner
  * @property-read \App\Models\Journal $journal
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\User|null $user
  * @method static \Database\Factories\PartnerFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Partner newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Partner newQuery()
@@ -297,12 +377,14 @@ namespace App\Models{
  * @property string $image_la_une
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $publie
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AchatParution[] $achats
  * @property-read int|null $achats_count
  * @property-read \App\Models\Journal $journal
  * @property-read \App\Models\Journee|null $journee
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Page[] $pages
  * @property-read int|null $pages_count
+ * @method static \Database\Factories\ParutionFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Parution newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Parution newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Parution query()
@@ -311,9 +393,88 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Parution whereImageLaUne($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Parution whereJournalId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Parution whereJourneeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Parution wherePublie($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Parution whereUpdatedAt($value)
  */
 	class Parution extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\RechargeCompte
+ *
+ * @property int $id
+ * @property int $montant
+ * @property int $compte_abonne_id
+ * @property string|null $methode_paiement
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\CompteAbonne|null $compte
+ * @method static \Database\Factories\RechargeCompteFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|RechargeCompte newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|RechargeCompte newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|RechargeCompte query()
+ * @method static \Illuminate\Database\Eloquent\Builder|RechargeCompte whereCompteAbonneId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RechargeCompte whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RechargeCompte whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RechargeCompte whereMethodePaiement($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RechargeCompte whereMontant($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RechargeCompte whereUpdatedAt($value)
+ */
+	class RechargeCompte extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\Resume
+ *
+ * @property int $id
+ * @property string $titre
+ * @property string $contenu
+ * @property string $image
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Database\Factories\ResumeFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|Resume newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Resume newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Resume query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Resume whereContenu($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Resume whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Resume whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Resume whereImage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Resume whereTitre($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Resume whereUpdatedAt($value)
+ */
+	class Resume extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\RetraitComptePartner
+ *
+ * @property int $id
+ * @property int $montant
+ * @property int $compte_partner_id
+ * @property string $valide_le
+ * @property int $valide
+ * @property string|null $commentaire
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\ComptePartner|null $comptePartner
+ * @method static \Database\Factories\RetraitComptePartnerFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|RetraitComptePartner newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|RetraitComptePartner newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|RetraitComptePartner query()
+ * @method static \Illuminate\Database\Eloquent\Builder|RetraitComptePartner whereCommentaire($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RetraitComptePartner whereComptePartnerId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RetraitComptePartner whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RetraitComptePartner whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RetraitComptePartner whereMontant($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RetraitComptePartner whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RetraitComptePartner whereValide($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RetraitComptePartner whereValideLe($value)
+ */
+	class RetraitComptePartner extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -334,32 +495,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Theme whereUpdatedAt($value)
  */
 	class Theme extends \Eloquent {}
-}
-
-namespace App\Models{
-/**
- * App\Models\TypeAbonnement
- *
- * @property int $id
- * @property int $prix
- * @property string|null $nom
- * @property int|null $niveau
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Abonnement[] $abonnements
- * @property-read int|null $abonnements_count
- * @method static \Database\Factories\TypeAbonnementFactory factory(...$parameters)
- * @method static \Illuminate\Database\Eloquent\Builder|Formule newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Formule newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Formule query()
- * @method static \Illuminate\Database\Eloquent\Builder|Formule whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Formule whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Formule whereNiveau($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Formule whereNom($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Formule wherePrix($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Formule whereUpdatedAt($value)
- */
-	class TypeAbonnement extends \Eloquent {}
 }
 
 namespace App\Models{

@@ -24,10 +24,23 @@ use App\Policies\RoleNames;
                 class="nav-icon la la-handshake"></i> Formules</a></li>
     <li class="nav-item"><a class="nav-link" href="{{ backpack_url('partner') }}"><i
                 class="nav-icon la la-handshake"></i> Partenaires</a></li>
-    <li class="nav-item"><a class="nav-link" href="{{ route('rapport.index') }}"><i
-                class="nav-icon la la-chart-bar"></i> Rapports</a></li>
+
     <li class="nav-item nav-dropdown">
-        <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-users"></i> Authentication</a>
+        <a class="nav-link nav-dropdown-toggle" href="#">
+            <i class="nav-icon la la-chart-bar"></i> Rapports</a>
+        <ul class="nav-dropdown-items">
+            <li class="nav-item"><a class="nav-link" href="{{ backpack_url('rapports') }}"><i
+                        class="nav-icon la la-cart-plus"></i> Ventes du jr</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ backpack_url('soldes') }}"><i
+                        class="nav-icon la la-wallet"></i> <span>Soldes</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ backpack_url('stats') }}"><i
+                        class="nav-icon la la-list"></i> <span>Statistiques</span></a></li>
+        </ul>
+    </li>
+
+    <li class="nav-item nav-dropdown">
+        <a class="nav-link nav-dropdown-toggle" href="#">
+            <i class="nav-icon la la-users"></i> Authentication</a>
         <ul class="nav-dropdown-items">
             <li class="nav-item"><a class="nav-link" href="{{ backpack_url('user') }}"><i
                         class="nav-icon la la-user"></i> Utilisateurs</a></li>
