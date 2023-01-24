@@ -12,6 +12,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\ParutionController;
 use App\Http\Controllers\ResumeController;
 use App\Http\Controllers\ThemeController;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -51,4 +52,12 @@ Route::apiResource("abonnements", AbonnementController::class);
 Route::apiResource("formules", FormuleController::class);
 Route::post("comptes_abonne/{abonne}/payment_url", [CompteAbonneController::class,"getWavePaymentUrl"]);
 Route::post("comptes_abonne/{abonne}/solde_disponible", [CompteAbonneController::class,"soldeDisponible"]);
+Route::prefix('otp')->group(function (){
+    Route::post("send_otp", function (){
+        return new JsonResponse(["otp_sent"=>true,"should_verify"=>true, ]);
+    });
+    Route::post("verify_otp", function (){
+        return new JsonResponse(["matched"=>true,"client_exists"=>true, ]);
+    });
+});
 
