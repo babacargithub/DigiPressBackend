@@ -66,6 +66,23 @@ class ArticleCrudController extends CrudController
          * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
          */
     }
+    public function setupShowOperation()
+    {
+
+        CRUD::column('titre');
+        CRUD::column('sous_titre');
+        $this->crud->addColumn(['name'=>'contenu','type'=>'wysiwyg-col']);
+        CRUD::column('page_id');
+        CRUD::column('image');
+        CRUD::column('compteur');
+
+
+        /**
+         * Columns can be defined using the fluent syntax or array syntax:
+         * - CRUD::column('price')->type('number');
+         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
+         */
+    }
 
     /**
      * Define what happens when the Create operation is loaded.
@@ -94,7 +111,7 @@ class ArticleCrudController extends CrudController
             "label"=>"Image Article",
             'type'=>'upload',
             "upload"=>true]);
-        CRUD::addField(['name'=>'contenu','type'=>'textarea']);
+        CRUD::addField(['name'=>'contenu','type'=>'wysiwyg']);
 
 
 
@@ -115,4 +132,5 @@ class ArticleCrudController extends CrudController
     {
         $this->setupCreateOperation();
     }
+
 }
