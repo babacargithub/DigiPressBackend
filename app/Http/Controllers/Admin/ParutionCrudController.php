@@ -165,8 +165,8 @@ class ParutionCrudController extends CrudController
         $parution = $this->crud->create($this->crud->getStrippedSaveRequest($request));
         $nombre_pages = $parution->journal->nombre_pages;
         $pages =[];
-        for($i=1; $i <= $nombre_pages; $i++){
-            $page = new Page(["numero"=>$i, "nom"=>"Page $i"]);
+        for($i=1; $i <= $nombre_pages - 1; $i++){
+            $page = new Page(["numero"=>$i+1, "nom"=> "Page "  . ($i + 1)]);
             $pages[] = $page;
         }
         $parution->pages()->saveMany($pages);

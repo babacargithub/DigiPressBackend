@@ -25,8 +25,12 @@ class ParutionController extends Controller
     public function index($date): Response
     {
         //
+        $demo = env("DEMO");
+        if ($demo){
+            $date = "2023-02-25";
+        }
         $parutionDuJour = Parution::whereHas("journee", function (Builder $query) use( $date) {
-            $query->whereDate('date_parutions', today());
+            $query->whereDate('date_parutions',$date);
         })->get();
         return response(ParutionResource::collection($parutionDuJour));
     }
@@ -64,19 +68,19 @@ class ParutionController extends Controller
         foreach ($parutions as $parution) {
             $achatParution = new AchatParution(
                 [
-                    "parution_id"=>$parution["id"],
+                    "parution_id"=> $parution["id"],
                     "abonne_id"=> $clientId ,
-                "prix"=>$parution["prix"],
-                "methode_paiement"=>"WAVE",
+                "prix" => $parution["prix"],
+                "methode_paiement" => "WAVE",
                 ]);
-            $achatParution->commission_journal = 12;
+
+            $achatParution->commission_journal = $achatParution->parution->journal->commission;
             $achatParution->methode_paiement = "WAVE";
             $achatParution->save();
-           /*
-            * TODO augmenter solde partenaire
-            $comptePartenaire = $achatParution->journal->partner->compte;
+
+            $comptePartenaire = $achatParution->parution->journal->partner->compte;
             $comptePartenaire->augmenterSolde($achatParution->commission_journal);
-            $comptePartenaire->save();*/
+            $comptePartenaire->save();
 
         }
         $compte->diminuerSolde($totalToPay);
@@ -85,23 +89,21 @@ class ParutionController extends Controller
         return $parutions;
         // create the wave checkout session
     }
-    public function paymentSuccessCallback(): ?JsonResponse
+    public function rechargeCompteSuccessCallback(): ?JsonResponse
     {
-
         try {
             $data = json_decode(request()->getContent(), true);
             $clientId = $data['client_id'];
             $montant = $data['montant'];
             /** @var  $compte CompteAbonne  */
             $compte = Abonne::with('compte')->find($clientId)->compte;
-            $compte->augmenterSolde($montant);
-            $compte->save();
             $recharge = new RechargeCompte();
             $recharge->montant = $montant;
             $recharge->compte()->associate($compte);
             $recharge->methode_paiement = "WAVE";
             $recharge->save();
-
+            $compte->augmenterSolde($montant);
+            $compte->save();
 
             return new JsonResponse(["status" => "OK: Payment saved"]);
         } catch (\Exception $e) {

@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Journal extends Model
 {
     use CrudTrait;
     use HasFactory;
-    protected $fillable = ["nom","prix","logo","nombre_pages"];
+    protected $fillable = ["nom","prix","logo","nombre_pages","commission"];
     protected $identifiableAttribute = 'nom';
 
     public function setLogoAttribute($value)
@@ -55,5 +55,10 @@ class Journal extends Model
            ->whereMonth('created_at', today()->format('m'))
            ->whereYear('created_at', today()->format('Y'))
            ->get();
+    }
+
+    public function partner() : HasOne
+    {
+        return $this->hasOne(Partner::class);
     }
 }

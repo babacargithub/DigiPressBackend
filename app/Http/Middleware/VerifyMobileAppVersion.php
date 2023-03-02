@@ -20,7 +20,7 @@ class VerifyMobileAppVersion
      */
     public function handle($request, Closure $next)
     {
-        $minimumAllowedVersion = 3;
+        $minimumAllowedVersion = 2;
         $versionBranch = $request->header("Version-Branch");
         $versionNumber = $request->header("Version-Number");
         $NativeMobile = $request->header("Native-Mobile");

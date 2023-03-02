@@ -49,6 +49,7 @@ class JournalCrudController extends CrudController
     {
         CRUD::column('nom');
         CRUD::column('prix');
+        CRUD::column('commission');
         CRUD::column('nombre_pages');
         $this->crud->addColumn(["name"=>"logo","type"=>"image"]);
 
@@ -71,6 +72,7 @@ class JournalCrudController extends CrudController
 
         CRUD::field('nom');
         CRUD::field('prix');
+        CRUD::field('commission');
         CRUD::field('nombre_pages');
         $this->crud->addField(['name'      => 'logo',
             'label'     => 'Logo',

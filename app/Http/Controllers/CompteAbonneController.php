@@ -21,7 +21,7 @@ class CompteAbonneController extends Controller
         //
         $url = "https://golobone.net/go_travel_v4/public/api/mobile/digipress_wave_url";
         $montant = request()->input('montant');
-        $response = Http::post($url,["client_id"=>request()->header("Client_id"),"montant"=>$montant]);
+        $response = Http::post($url,["type"=>"digipress","client_id"=>request()->header("Client_id"),"montant"=>$montant]);
        return  new JsonResponse(["launch_url"=>$response->json("wave_launch_url")]);
     }
 

@@ -12,7 +12,8 @@ class Partner extends Model
 {
     use CrudTrait;
     use HasFactory;
-protected $fillable =["nom","email","telephone","journal_id"];
+    protected $fillable =["nom","email","telephone","journal_id"];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -29,9 +30,7 @@ protected $fillable =["nom","email","telephone","journal_id"];
 
     public function getAchatsDuJour()
     {
-
         return $this->journal->achatsParution()->whereDate('created_at',today())->get();
-
     }
 
 }
