@@ -22,6 +22,9 @@ Route::group(["middleware" => "can:see_admin_area"], function (){
 });
 
 
+Route::get('/test-vue', function () {
+    return view('test_vue');
+});
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
