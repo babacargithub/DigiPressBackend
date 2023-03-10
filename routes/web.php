@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PageController;
 use App\Models\Partner;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,7 @@ Route::group(["middleware" => "can:see_admin_area"], function (){
 Route::get('/test-vue', function () {
     return view('test_vue');
 });
+Route::post('/{parution}/test-upload',[\App\Http\Controllers\Admin\PageCrudController::class ,"savePagesImages"])->name("test-upload");
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');

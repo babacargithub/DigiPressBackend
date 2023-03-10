@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePageRequest;
 use App\Http\Requests\UpdatePageRequest;
+use App\Http\Resources\PageResource;
 use App\Models\Page;
 use App\Models\Parution;
+use Illuminate\Http\JsonResponse;
 
 class PageController extends Controller
 {
@@ -35,11 +37,12 @@ class PageController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Page  $page
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse|\Illuminate\Http\Response
      */
     public function show(Page $page)
     {
         //
+        return new JsonResponse(new PageResource($page));
     }
 
     /**

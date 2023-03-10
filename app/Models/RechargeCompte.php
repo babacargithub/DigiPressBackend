@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class RechargeCompte extends Model
 {
     use HasFactory;
-    public function compte(): BelongsTo
+    public function compteAbonne(): BelongsTo
     {
         return $this->belongsTo(CompteAbonne::class);
     }

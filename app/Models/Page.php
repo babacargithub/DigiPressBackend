@@ -17,7 +17,7 @@ class Page extends Model
      * nom
      * */
     use HasFactory;
-    protected $fillable = ["parution_id","numero","nom"];
+    protected $fillable = ["parution_id","numero","nom","image"];
 
     public function parution(): BelongsTo
     {
@@ -28,8 +28,23 @@ class Page extends Model
         return $this->hasMany(Article::class);
     }
 
-    public function getImageAttribute()
+
+
+    /**
+     * @throws \Exception
+     */
+    public function setImageAttribute($file)
     {
-        return $this->parution->image_la_une;
+
+        if ($file != null){
+            $attribute_name = "image";
+            $disk = "public";
+            $destination_path = "images_pages";
+            $new_file_name = md5($file->getClientOriginalName() . random_int(1, 9999) . time()) . '.' . $file->getClientOriginalExtension();
+            $file_path = $file->storeAs($destination_path, $new_file_name, $disk);// 3. Save the complete path to the database
+            $this->attributes[$attribute_name] = $file_path;
+        }
+//        $this->uploadFileToDisk($value, $attribute_name, $disk, $destination_path);
+
     }
 }

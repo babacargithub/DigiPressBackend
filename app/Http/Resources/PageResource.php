@@ -18,6 +18,8 @@ class PageResource extends JsonResource
             "id"=>$this->id,
             "numero"=>$this->numero,
             "nom"=>$this->nom,
+            "image"=>"storage/".$this->image,
+
             "articles"=>ArticleResource::collection($this->articles)
         ];
     }

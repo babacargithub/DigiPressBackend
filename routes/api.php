@@ -27,13 +27,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+Route::post("payment_success",[CompteAbonneController::class, "rechargeCompteSuccessCallback"]);
+
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
 Route::get("abonnes/phone_number/{phoneNumber}", [AbonneController::class,"abonneExists"]);
 Route::get("abonnes/transactions/{abonne_id}", [AbonneController::class,"showTransactions"]);
-Route::post("payment_success",[ParutionController::class, "rechargeCompteSuccessCallback"]);
 Route::get("parutions/{date}",[ParutionController::class,"index"]);
 Route::get("parutions/{parution}/pages",[ParutionController::class,"parutionPages"]);
 Route::post("payer",[ParutionController::class,"savePayment"]);

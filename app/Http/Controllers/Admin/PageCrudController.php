@@ -14,6 +14,8 @@ use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class PageCrudController
@@ -128,6 +130,32 @@ class PageCrudController extends CrudController
 //        return redirect('index');
 //
 //    }
+
+    public function savePagesImages(Parution $parution, Request $request)
+    {
+        $files = $request->file("images");
+        if (count($files) > 0) {
+            foreach ($files as $file) {
+
+                $fileName = $file->getClientOriginalName();
+                $fileName = pathinfo($fileName, PATHINFO_FILENAME);
+                $page_number = preg_replace("/[^0-9]/", "", substr($fileName, -2) );
+                $guessedPageName = "Page " . intval($page_number);
+                /** @var Page $page */
+                $page = $parution->pages->where("nom", $guessedPageName)->first();
+                if ($page != null) {
+                    try {
+                        $page->setImageAttribute($file);
+                        $page->save();
+                    } catch (\Exception $e) {
+                        abort(500, $e->getMessage());
+                    }
+                } else {
+                    throw  new NotFoundHttpException("L'une des images envoyées ne correspond à aucune page ,nom de l'image soumise : " . $fileName. ", transformé en :".$guessedPageName);
+                }
+            }
+        }
+    }
 
 
 }
