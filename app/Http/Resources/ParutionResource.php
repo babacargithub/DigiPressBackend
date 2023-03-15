@@ -24,7 +24,8 @@ class ParutionResource extends JsonResource
            "logo_journal"=>$this->journal->logo,
             "prix"=>$this->journal->prix,
             "image_la_une"=>"storage/".$this->image_la_une,
-            "achete"=>$this->isPurchased()
+            "achete"=>$this->isPurchased(),
+            "is_empty"=> $this->pages_count == 0
             ];
     }
 }

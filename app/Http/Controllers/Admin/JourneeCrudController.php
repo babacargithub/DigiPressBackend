@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\JourneeRequest;
+use App\Models\Journal;
+use App\Models\Journee;
+use App\Models\Parution;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
@@ -11,6 +14,7 @@ use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Facades\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class JourneeCrudController
@@ -50,6 +54,7 @@ class JourneeCrudController extends CrudController
 //        $this->crud->addColumn(["name"=>"created_at","type"=>"link","label"=>"Ajouter Parution","url"=>$url]);
 //        $this->crud->addColumn(["name"=>"image_la_une", "type"=>"link", "url"=>"jdj", 'label'=>"A la Une"]);
         $this->crud->addButtonFromView("line","voir_parution","voir_parution","beginning");
+        $this->crud->addButtonFromView("line","creer_parutions","creer_parutions","beginning");
         $this->crud->addButtonFromView("line",'ajouter_parution',"ajouter_parution","beginning");
 
         /**
@@ -93,5 +98,42 @@ class JourneeCrudController extends CrudController
     {
         return redirect()->route('parution.index',["journee"=>$journee]);
 
+    }
+
+    public function createParutionsFromImages(Journee $journee)
+    {
+        if (request()->isMethod("POST")) {
+            $files = request()->file("images");
+            if (count($files) > 0) {
+                foreach ($files as $file) {
+
+                    $fileName = $file->getClientOriginalName();
+                    $fileName = pathinfo($fileName, PATHINFO_FILENAME);
+                    /** @var Journal $journal */
+                    $journal = Journal::where("nom", "LIKE", "%$fileName%")->first();
+                    if ($journal != null) {
+                        try {
+                            $parution = Parution::whereJourneeId($journee->id)->whereJournalId($journal->id)->first();
+
+                            if ($parution == null) {
+                                $parution = new Parution();
+                                $parution->setImageLaUneAttribute($file);
+                                $parution->journal()->associate($journal);
+                                $parution->journee()->associate($journee);
+                                $parution->publie = true;
+                                $parution->save();
+                            }
+                        } catch (\Exception $e) {
+                            abort(500, $e->getMessage());
+                        }
+                    }
+                }
+            }
+            return  redirect(route("show_parutions", ["journee"=>$journee->id]));
+
+        } else {
+
+            return view('admin/creer_parutions_images');
+        }
     }
 }

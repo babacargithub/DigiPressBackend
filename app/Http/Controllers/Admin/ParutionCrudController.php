@@ -54,7 +54,8 @@ class ParutionCrudController extends CrudController
 
         $this->crud->addColumn(["name"=>'publie', "type"=>"switch"]);
         $this->crud->addColumn(["name"=>"image_la_une", "type"=>"image", 'label'=>"A la Une"]);
-        $this->crud->addColumn(["name"=>"ajouter_page", "type"=>"model_route_link", "route"=>"page.create","model_key"=>"parution", 'route_label'=>"Ajouter Page"]);
+        $this->crud->addColumn(["name"=>"ajouter_page", "type"=>"model_route_link", "route"=>"page.create","model_key"=>"parution", 'route_label'=>"Ajouter 1 Page"]);
+        $this->crud->addColumn(["name"=>"ajouter_multiple_page", "type"=>"model_route_link", "route"=>"create_multiple_pages","model_key"=>"parution", 'route_label'=>"Ajouter Multiple"]);
         $this->crud->addColumn(["name"=>"see_pages", "type"=>"model_route_link", "route"=>"page.index","model_key"=>"parution", 'route_label'=>"Pages"]);
         CRUD::column('journee_id');
         $this->crud->addClause('where', 'journee_id', '=', $journee);

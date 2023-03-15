@@ -5,29 +5,34 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreJourneeRequest;
 use App\Http\Requests\UpdateJourneeRequest;
 use App\Http\Resources\ArticleResource;
-use App\Http\Resources\JourneeResouce;
+use App\Http\Resources\JourneeResource;
 use App\Models\Article;
 use App\Models\Journee;
 use App\Models\Theme;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Response;
 
 class JourneeController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         //
-        return response(JourneeResouce::collection(Journee::all()));
+        return response(JourneeResource::collection(Journee::limit(5)->orderByDesc("date_parutions")->get()));
     }
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param Journee $journee
+     * @param Theme $theme
+     * @return Response
      */
-    public function journeeThemeArticles(Journee $journee, Theme $theme)
+    public function journeeThemeArticles(Journee $journee, Theme $theme): Response
     {
         //
         return response(ArticleResource::collection(Article::where("theme_id",$theme->id)->get()));
@@ -36,8 +41,8 @@ class JourneeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreJourneeRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreJourneeRequest $request
+     * @return Journee|Model|Response
      */
     public function store(StoreJourneeRequest $request)
     {
@@ -48,20 +53,21 @@ class JourneeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Journee  $journee
-     * @return \Illuminate\Http\Response
+     * @param Journee $journee
+     * @return Journee
      */
     public function show(Journee $journee)
     {
         //
+        return  $journee;
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdateJourneeRequest  $request
-     * @param  \App\Models\Journee  $journee
-     * @return \Illuminate\Http\Response
+     * @param Journee $journee
+     * @return Response
      */
     public function update(UpdateJourneeRequest $request, Journee $journee)
     {
@@ -71,8 +77,8 @@ class JourneeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Journee  $journee
-     * @return \Illuminate\Http\Response
+     * @param Journee $journee
+     * @return Response
      */
     public function destroy(Journee $journee)
     {

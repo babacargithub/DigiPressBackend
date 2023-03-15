@@ -66,8 +66,9 @@ class ParutionController extends Controller
             abort(403, "Solde insuffisant");
         }
         foreach ($parutions as $parution) {
-            if (($alreadyPurchasedParution = AchatParution::whereParutionId($parution["id"])->whereAbonneId($clientId)->first()) != null)
-         {
+            $alreadyPurchasedParution = AchatParution::whereParutionId($parution["id"])->whereAbonneId($clientId)->first();
+            if ($alreadyPurchasedParution == null)
+            {
                 $achatParution = new AchatParution(
                     [
                         "parution_id" => $parution["id"],
@@ -78,11 +79,12 @@ class ParutionController extends Controller
                 $achatParution->commission_journal = $achatParution->parution->journal->commission;
                 $achatParution->methode_paiement = "WAVE";
                 $achatParution->save();
-                $comptePartenaire = $achatParution->parution->journal->partner->compte;
+                // augmenter solde partenaire 
+                $comptePartenaire = $achatParution->parution->journal->partner->comptePartner;
                 $comptePartenaire->augmenterSolde($achatParution->commission_journal);
                 $comptePartenaire->save();
             }else{
-              $totalToPay = $totalToPay - $alreadyPurchasedParution->prix;
+                $totalToPay = $totalToPay - $alreadyPurchasedParution->prix;
             }
 
         }

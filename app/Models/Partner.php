@@ -23,7 +23,7 @@ class Partner extends Model
     {
         return $this->belongsTo(Journal::class);
     }
-    public function compte(): HasOne
+    public function comptePartner(): HasOne
     {
         return $this->hasOne(ComptePartner::class);
     }

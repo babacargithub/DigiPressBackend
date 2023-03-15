@@ -34,16 +34,20 @@ class Parution extends Model
     {
         return $this->hasMany(Page::class);
     }
-    public function setImageLaUneAttribute($value)
+    public function setImageLaUneAttribute($file)
     {
 
         if (env("APP_ENV") != "testing") {
             $attribute_name = "image_la_une";
             $disk = "public";
             $destination_path = "images_a_la_une";
-            $this->uploadFileToDisk($value, $attribute_name, $disk, $destination_path);
+            $new_file_name = md5($file->getClientOriginalName().random_int(1, 9999).time()).'.'.$file->getClientOriginalExtension();
+
+            $file_path = $file->storeAs($destination_path, $new_file_name, $disk);
+            $this->attributes['image_la_une'] = $file_path;
+
         } else {
-            $this->attributes["image_la_une"] = $value;
+            $this->attributes["image_la_une"] = $file;
         }
 
     }
@@ -74,5 +78,15 @@ class Parution extends Model
         return "Parution de ".$this->journal->nom. " -le- ".  $this->created_at->format('d-m-Y');
     }
     protected $appends = ["label", "is_purchased"];
+
+    public function createPages()
+    {
+        $pages =[];
+        for($i=1; $i <= $this->journal->nombre_pages - 1; $i++){
+            $page = new Page(["numero"=>$i+1, "nom"=> "Page "  . ($i + 1)]);
+            $pages[] = $page;
+        }
+        $this->pages()->saveMany($pages);
+    }
 
 }

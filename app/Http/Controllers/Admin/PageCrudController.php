@@ -133,28 +133,34 @@ class PageCrudController extends CrudController
 
     public function savePagesImages(Parution $parution, Request $request)
     {
-        $files = $request->file("images");
-        if (count($files) > 0) {
-            foreach ($files as $file) {
+        if ($request->isMethod("POST")) {
+            $files = $request->file("images");
+            if (count($files) > 0) {
+                foreach ($files as $file) {
 
-                $fileName = $file->getClientOriginalName();
-                $fileName = pathinfo($fileName, PATHINFO_FILENAME);
-                $page_number = preg_replace("/[^0-9]/", "", substr($fileName, -2) );
-                $guessedPageName = "Page " . intval($page_number);
-                /** @var Page $page */
-                $page = $parution->pages->where("nom", $guessedPageName)->first();
-                if ($page != null) {
-                    try {
-                        $page->setImageAttribute($file);
-                        $page->save();
-                    } catch (\Exception $e) {
-                        abort(500, $e->getMessage());
+                    $fileName = $file->getClientOriginalName();
+                    $fileName = pathinfo($fileName, PATHINFO_FILENAME);
+                    $page_number = preg_replace("/[^0-9]/", "", substr($fileName, -2));
+                    $guessedPageName = "Page " . intval($page_number);
+                    /** @var Page $page */
+                    $page = $parution->pages->where("nom", $guessedPageName)->first();
+                    if ($page != null) {
+                        try {
+                            $page->setImageAttribute($file);
+                            $page->save();
+                        } catch (\Exception $e) {
+                            abort(500, $e->getMessage());
+                        }
                     }
-                } else {
-                    throw  new NotFoundHttpException("L'une des images envoyées ne correspond à aucune page ,nom de l'image soumise : " . $fileName. ", transformé en :".$guessedPageName);
                 }
+                return redirect(route("page.index",["parution"=>$parution->id]));
+
             }
         }
+        if ($parution->pages_count == 0){
+            $parution->createPages();
+        }
+        return view("admin/create_multiple_pages",["parution"=>$parution]);
     }
 
 
