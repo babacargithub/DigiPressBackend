@@ -11,9 +11,11 @@ Route::post('/login', function (\Illuminate\Http\Request $request){
     ]);
     if (Auth::attempt($credentials)) {
         return response(request()->user()->createToken("name"));
-    }
+    }else{
 
     return response("Invalid credentials")->setStatusCode(401);
+    }
+
 });
 Route::middleware("auth:sanctum")->group(function(){
 
