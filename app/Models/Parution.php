@@ -79,7 +79,7 @@ class Parution extends Model
     }
     protected $appends = ["label", "is_purchased"];
 
-    public function createPages()
+    public function createPages(): Parution
     {
         $pages =[];
         for($i=1; $i <= $this->journal->nombre_pages - 1; $i++){
@@ -87,6 +87,8 @@ class Parution extends Model
             $pages[] = $page;
         }
         $this->pages()->saveMany($pages);
+
+        return $this;
     }
 
 }

@@ -79,5 +79,10 @@ class CompteAbonneController extends Controller
         }
     }
 
+    public function rechargeCompte(Abonne $client)
+    {
+        return view('payment');
+    }
+
 
 }

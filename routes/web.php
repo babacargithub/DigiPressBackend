@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\JourneeCrudController;
 use App\Http\Controllers\Admin\PageCrudController;
+use App\Http\Controllers\CompteAbonneController;
 use App\Http\Controllers\PageController;
 use App\Models\Partner;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get("/recharger_mon_compte/client/{abonne}",[CompteAbonneController::class, "rechargeCompte"]);
+
 Route::group(["middleware" => "can:see_admin_area"], function (){
     Route::get('/', function () {
         $partner = Partner::with("journal")->where("user_id","=",request()->user()->id)->first();

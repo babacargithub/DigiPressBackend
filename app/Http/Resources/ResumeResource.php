@@ -23,6 +23,7 @@ class ResumeResource extends JsonResource
            "id"=>$this->id,
            "contenu"=>$this->contenu,
            "titre"=>$this->titre,
+            "isFree"=>true,
             "image"=>"storage/".$this->image,
             ];
     }

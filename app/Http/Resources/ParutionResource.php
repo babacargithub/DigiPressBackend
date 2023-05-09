@@ -3,6 +3,8 @@
 namespace App\Http\Resources;
 
 use App\Models\Parution;
+use Carbon\Carbon;
+use Carbon\CarbonInterface;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -25,7 +27,9 @@ class ParutionResource extends JsonResource
             "prix"=>$this->journal->prix,
             "image_la_une"=>"storage/".$this->image_la_une,
             "achete"=>$this->isPurchased(),
-            "is_empty"=> $this->pages_count == 0
+            "ordre_affichage"=>intval($this->journal->ordre_affichage),
+            "epingle"=> $this->epingle == true && ($this->epingle_jusqua != null && $this->epingle_jusqua instanceof CarbonInterface) && !Carbon::create($this->epingle_jusqua)->isPast(),
+            "is_empty"=> $this->pages()->count() == 0
             ];
     }
 }

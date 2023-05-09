@@ -54,12 +54,12 @@ class JourneeController extends Controller
      * Display the specified resource.
      *
      * @param Journee $journee
-     * @return Journee
+     * @return JourneeResource
      */
     public function show(Journee $journee)
     {
         //
-        return  $journee;
+        return  new JourneeResource($journee);
     }
 
     /**
