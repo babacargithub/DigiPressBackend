@@ -15,7 +15,7 @@ class ResumeController extends Controller
     public function index(): AnonymousResourceCollection
     {
         //
-        return  ResumeResource::collection(Resume::all());
+        return  ResumeResource::collection(Resume::orderBy('created_at', 'desc')->get());
     }
 
 

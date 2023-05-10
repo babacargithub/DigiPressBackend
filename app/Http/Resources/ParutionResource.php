@@ -29,7 +29,8 @@ class ParutionResource extends JsonResource
             "achete"=>$this->isPurchased(),
             "ordre_affichage"=>intval($this->journal->ordre_affichage),
             "epingle"=> $this->epingle == true && ($this->epingle_jusqua != null && $this->epingle_jusqua instanceof CarbonInterface) && !Carbon::create($this->epingle_jusqua)->isPast(),
-            "is_empty"=> $this->pages()->count() == 0
+            "is_empty"=> $this->pages()->count() == 0,
+            "is_purchasable"=> $this->pages()->count() > 0
             ];
     }
 }

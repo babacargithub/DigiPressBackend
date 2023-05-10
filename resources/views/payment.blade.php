@@ -70,12 +70,14 @@
 
         <div class="container-fluid animated fadeIn">
 
-
+@isset($success)
+    <h5 style="color: green">Paiement enregistré avec succès ! Vous devez valider l'opération dans votre application de paiement</h5>
+            @else
             <div class="row">
 
 
                 <div class="col-lg-8">
-                    <form class="form" action="https://app.digipress.pro/payment" method="post">
+                    <form class="form" action="" method="post">
 
                         <div class="card padding-10">
 
@@ -93,11 +95,11 @@
                                     <div class="col-md-6 form-group">
                                         <label class="required">Methode de paiement</label>
                                         <label class="required">Wave</label>
-                                        <input type="radio" />
+                                        <input type="radio"  name="payment_method" value="WAVE"/>
                                         <label class="required">Orange Money</label>
-                                        <input type="radio" />
+                                        <input type="radio"  name="payment_method" value="OM"/>
                                         <label class="required">Carte Bancaire</label>
-                                        <input type="radio" />
+                                        <input type="radio"  name="payment_method" value="Carte"/>
 
                                     </div>
                                 </div>
@@ -113,7 +115,7 @@
                 </div>
             </div>
 
-
+    @endif
         </div>
 
     </main>
@@ -122,7 +124,7 @@
 
 <footer class="app-footer d-print-none">
     <div class="text-muted ml-auto mr-auto">
-        Un produit par <a target="_blank" rel="noopener" href="https://golobone.sn">Bestech SARL</a>.
+        Un produit par <a target="_blank" rel="noopener" href="https://tekkipub.com">Bestech SARL</a>.
     </div>
 </footer>
 

@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get("/recharger_mon_compte/client/{abonne}",[CompteAbonneController::class, "rechargeCompte"]);
+Route::any("/recharger_mon_compte/client/{abonne}",[CompteAbonneController::class, "rechargeCompte"]);
 
 Route::group(["middleware" => "can:see_admin_area"], function (){
     Route::get('/', function () {

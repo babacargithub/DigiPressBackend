@@ -81,6 +81,10 @@ class CompteAbonneController extends Controller
 
     public function rechargeCompte(Abonne $client)
     {
+        if (request()->isMethod("POST")){
+
+        return view('payment',["success"=>true]);
+        }
         return view('payment');
     }
 
